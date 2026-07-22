@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nathan Lampl — Art Department</title>
+<meta name="description" content="Nathan Lampl — Production Designer, Art Director & Art Coordinator. Film, television, commercial and music video work.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Space+Grotesk:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+
+  /* ============ TOKENS ============ */
+  :root{
+    --bg:            #0b0a08;
+    --bg-raised:     #131210;
+    --bg-tag:        #d8c9a8;      /* manila-tag color, used sparingly */
+    --line:          #26231d;
+    --line-soft:     #1a1815;
+    --text:          #ece6d8;
+    --text-dim:      #948c7a;
+    --text-faint:    #55503f;
+    --accent:        #b5844f;      /* gaffer-tape brass */
+    --accent-dim:    #6b5334;
+    --focus:         #d9b273;
+
+    --display: 'Archivo Black', sans-serif;
+    --body:    'Space Grotesk', sans-serif;
+    --mono:    'IBM Plex Mono', monospace;
+  }
+
+  *{ box-sizing:border-box; margin:0; padding:0; }
+  html{ scroll-behavior:smooth; }
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:var(--body);
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  a{ color:inherit; text-decoration:none; }
+  ul{ list-style:none; }
+  button{ font-family:inherit; background:none; border:none; color:inherit; cursor:pointer; }
+  img{ max-width:100%; display:block; }
+  :focus-visible{ outline:2px solid var(--focus); outline-offset:3px; }
+
+  ::selection{ background:var(--accent-dim); color:var(--text); }
+
+  /* subtle film-grain texture over everything */
+  body::before{
+    content:"";
+    position:fixed; inset:0;
+    pointer-events:none;
+    z-index:999;
+    opacity:.035;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  /* ============ LANDING ============ */
+  #landing{
+    position:fixed; inset:0;
+    display:flex; align-items:center; justify-content:center;
+    background:
+      radial-gradient(ellipse at 50% 30%, rgba(181,132,79,.10), transparent 60%),
+      linear-gradient(180deg, #0f0d0a 0%, #080706 100%);
+    cursor:pointer;
+    z-index:500;
+    transition:opacity .7s ease, visibility .7s ease;
+  }
+  #landing.hidden{ opacity:0; visibility:hidden; pointer-events:none; }
+
+  #landing .frame{
+    position:absolute; inset:28px;
+    border:1px solid var(--line);
+    pointer-events:none;
+  }
+  #landing .corner{
+    position:absolute; width:16px; height:16px;
+    pointer-events:none;
+  }
+  #landing .corner::before, #landing .corner::after{
+    content:""; position:absolute; background:var(--text-dim);
+  }
+  #landing .corner::before{ width:16px; height:1px; top:0; left:0; }
+  #landing .corner::after{ width:1px; height:16px; top:0; left:0; }
+  #landing .tl{ top:28px; left:28px; }
+  #landing .tr{ top:28px; right:28px; transform:scaleX(-1); }
+  #landing .bl{ bottom:28px; left:28px; transform:scaleY(-1); }
+  #landing .br{ bottom:28px; right:28px; transform:scale(-1); }
+
+  #landing .center{
+    text-align:center;
+    position:relative;
+  }
+  #landing .name{
+    font-family:var(--mono);
+    font-size:11px;
+    letter-spacing:.35em;
+    color:var(--text-dim);
+    text-transform:uppercase;
+    margin-bottom:22px;
+  }
+  #landing .enter{
+    font-family:var(--display);
+    font-size:clamp(28px,5vw,52px);
+    letter-spacing:.04em;
+    color:var(--text);
+    position:relative;
+    display:inline-block;
+    padding-bottom:14px;
+  }
+  #landing .enter::after{
+    content:"";
+    position:absolute; left:50%; bottom:0;
+    width:0; height:1px;
+    background:var(--accent);
+    transform:translateX(-50%);
+    transition:width .5s ease;
+  }
+  #landing:hover .enter::after{ width:100%; }
+  #landing .sub{
+    margin-top:16px;
+    font-family:var(--mono);
+    font-size:10px;
+    letter-spacing:.25em;
+    color:var(--text-faint);
+    text-transform:uppercase;
+  }
+
+  /* ============ SITE SHELL ============ */
+  #site{ display:none; min-height:100vh; }
+  #site.active{ display:block; }
+
+  header.topnav{
+    position:sticky; top:0; z-index:200;
+    display:flex; align-items:center; justify-content:space-between;
+    padding:20px clamp(20px,4vw,48px);
+    background:rgba(11,10,8,.88);
+    backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--line);
+  }
+  header.topnav .brand{
+    font-family:var(--display);
+    font-size:15px;
+    letter-spacing:.06em;
+  }
+  header.topnav .brand span{ color:var(--accent); }
+  header.topnav nav{ display:flex; gap:clamp(14px,3vw,34px); align-items:center; }
+  header.topnav nav a{
+    font-family:var(--mono);
+    font-size:11px;
+    letter-spacing:.15em;
+    text-transform:uppercase;
+    color:var(--text-dim);
+    padding:6px 2px;
+    border-bottom:1px solid transparent;
+    transition:color .2s, border-color .2s;
+    white-space:nowrap;
+  }
+  header.topnav nav a:hover,
+  header.topnav nav a.current{ color:var(--text); border-color:var(--accent); }
+  #navToggle{ display:none; font-family:var(--mono); font-size:20px; }
+
+  @media (max-width:640px){
+    header.topnav nav{
+      position:fixed; top:64px; left:0; right:0;
+      flex-direction:column; align-items:flex-start; gap:0;
+      background:var(--bg); border-bottom:1px solid var(--line);
+      max-height:0; overflow:hidden; transition:max-height .3s ease;
+    }
+    header.topnav nav.open{ max-height:280px; }
+    header.topnav nav a{ padding:14px 24px; width:100%; border-bottom:1px solid var(--line-soft); }
+    #navToggle{ display:block; }
+  }
+
+  main{ padding:0 clamp(20px,4vw,48px) 80px; }
+
+  /* ============ CATEGORY / HOME VIEW ============ */
+  .page-head{
+    padding:56px 0 34px;
+    border-bottom:1px solid var(--line);
+    margin-bottom:40px;
+  }
+  .page-head .eyebrow{
+    font-family:var(--mono); font-size:11px; letter-spacing:.3em;
+    text-transform:uppercase; color:var(--accent); margin-bottom:14px;
+  }
+  .page-head h1{
+    font-family:var(--display);
+    font-size:clamp(32px,6vw,64px);
+    letter-spacing:.01em;
+    line-height:1;
+  }
+  .page-head p{
+    margin-top:16px; color:var(--text-dim); font-size:14px; max-width:52ch;
+  }
+
+  .filter-bar{
+    display:flex; flex-wrap:wrap; gap:10px;
+    margin-bottom:28px;
+  }
+  .filter-btn{
+    font-family:var(--mono); font-size:11px; letter-spacing:.12em;
+    text-transform:uppercase; color:var(--text-dim);
+    padding:8px 16px; border:1px solid var(--line);
+    transition:color .2s, border-color .2s, background .2s;
+  }
+  .filter-btn:hover{ color:var(--text); border-color:var(--text-dim); }
+  .filter-btn.active{ color:var(--bg); background:var(--accent); border-color:var(--accent); }
+
+  .grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill, minmax(280px,1fr));
+    gap:2px;
+    background:var(--line);
+    border:1px solid var(--line);
+  }
+
+  @media (max-width:640px){
+    .grid{
+      grid-template-columns:repeat(2, 1fr);
+    }
+  }
+
+  .card{
+    position:relative;
+    background:var(--bg);
+    aspect-ratio:4/3;
+    overflow:hidden;
+    display:block;
+  }
+  .card .ph{
+    position:absolute; inset:0;
+    background:
+      repeating-linear-gradient(135deg, rgba(181,132,79,.05) 0 2px, transparent 2px 14px),
+      linear-gradient(160deg, var(--bg-raised), #0a0908);
+    display:flex; align-items:center; justify-content:center;
+    transition:transform .6s ease;
+  }
+  .card:hover .ph{ transform:scale(1.04); }
+  .card img.real{
+    position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
+    transition:transform .6s ease;
+  }
+  .card:hover img.real{ transform:scale(1.04); }
+
+  .ph .placeholder-label{
+    font-family:var(--mono); font-size:10px; letter-spacing:.2em;
+    color:var(--text-faint); text-transform:uppercase;
+  }
+
+  .card .tag{
+    position:absolute; top:8px; left:8px;
+    background:var(--bg-tag);
+    color:#241d10;
+    font-family:var(--mono);
+    font-size:9.5px;
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    padding:4px 8px 4px 7px;
+    transform:rotate(-3deg);
+    box-shadow:0 3px 6px rgba(0,0,0,.35);
+    z-index:2;
+  }
+  .card .tag::before{
+    content:"";
+    position:absolute; left:-4px; top:50%; width:6px; height:6px;
+    background:var(--bg); border-radius:50%;
+    transform:translateY(-50%);
+    box-shadow:inset 0 0 0 1px rgba(0,0,0,.25);
+  }
+
+  .card .info{
+    position:absolute; left:0; right:0; bottom:0;
+    padding:22px 14px 10px;
+    background:linear-gradient(0deg, rgba(0,0,0,.82) 0%, rgba(0,0,0,.5) 55%, transparent 100%);
+  }
+  .card .info h3{
+    font-family:var(--body); font-weight:600; font-size:15px; line-height:1.25;
+  }
+  .card .info .co{
+    font-family:var(--mono); font-size:10px; letter-spacing:.08em;
+    color:var(--text-dim); margin-top:3px;
+  }
+
+  /* ============ PROJECT DETAIL ============ */
+  .project-head{
+    padding:56px 0 30px;
+    border-bottom:1px solid var(--line);
+    margin-bottom:36px;
+  }
+  .back-link{
+    font-family:var(--mono); font-size:11px; letter-spacing:.15em;
+    text-transform:uppercase; color:var(--text-dim);
+    display:inline-flex; align-items:center; gap:8px; margin-bottom:26px;
+  }
+  .back-link:hover{ color:var(--accent); }
+
+  .project-head h1{
+    font-family:var(--display);
+    font-size:clamp(28px,5vw,52px);
+    line-height:1.05;
+    max-width:18ch;
+  }
+  .credit-line{
+    margin-top:22px; display:flex; flex-wrap:wrap; gap:10px 28px;
+  }
+  .credit-line div{ font-family:var(--mono); font-size:11px; }
+  .credit-line .k{ color:var(--text-faint); letter-spacing:.15em; text-transform:uppercase; display:block; margin-bottom:4px; }
+  .credit-line .v{ color:var(--text); font-size:13px; }
+  .credit-line .v.role{ color:var(--accent); }
+
+  .project-links{
+    display:flex; flex-wrap:wrap; gap:10px;
+    margin-top:24px;
+  }
+  .link-pill{
+    font-family:var(--mono); font-size:11px; letter-spacing:.1em;
+    text-transform:uppercase; color:var(--text);
+    padding:8px 16px; border:1px solid var(--accent-dim);
+    display:inline-flex; align-items:center; gap:6px;
+    transition:border-color .2s, background .2s, color .2s;
+  }
+  .link-pill::after{ content:"↗"; font-size:12px; }
+  .link-pill:hover{ border-color:var(--accent); color:var(--accent); }
+
+  .video-wrap{
+    position:relative; width:100%; padding-top:56.25%;
+    background:var(--bg-raised); border:1px solid var(--line);
+    margin-bottom:2px;
+  }
+  .video-wrap iframe{ position:absolute; inset:0; width:100%; height:100%; border:0; }
+
+  .project-gallery{
+    display:grid;
+    grid-template-columns:repeat(auto-fill, minmax(320px,1fr));
+    gap:2px;
+    background:var(--line);
+    border:1px solid var(--line);
+  }
+  .project-gallery .shot{
+    position:relative; aspect-ratio:3/2; background:var(--bg);
+    overflow:hidden;
+  }
+  .project-gallery .shot .ph{
+    position:absolute; inset:0;
+    background:
+      repeating-linear-gradient(135deg, rgba(181,132,79,.05) 0 2px, transparent 2px 14px),
+      linear-gradient(160deg, var(--bg-raised), #0a0908);
+    display:flex; align-items:center; justify-content:center;
+  }
+  .project-gallery img.real{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
+
+  .empty-note{
+    font-family:var(--mono); font-size:11.5px; color:var(--text-faint);
+    letter-spacing:.05em; padding:36px 0; text-align:center; border:1px dashed var(--line);
+    margin-top:2px;
+  }
+
+  /* ============ CONTACT ============ */
+  .contact-wrap{
+    padding:56px 0 40px; max-width:640px;
+  }
+  .contact-wrap .eyebrow{
+    font-family:var(--mono); font-size:11px; letter-spacing:.3em;
+    text-transform:uppercase; color:var(--accent); margin-bottom:14px;
+  }
+  .contact-wrap h1{
+    font-family:var(--display); font-size:clamp(30px,5vw,48px); margin-bottom:28px;
+  }
+  .contact-list{ border-top:1px solid var(--line); }
+  .contact-list li{
+    display:flex; justify-content:space-between; align-items:center;
+    padding:18px 0; border-bottom:1px solid var(--line);
+    font-family:var(--mono); font-size:13px;
+  }
+  .contact-list li .k{ color:var(--text-faint); letter-spacing:.15em; text-transform:uppercase; font-size:11px; }
+  .contact-list li a{ color:var(--text); transition:color .2s; }
+  .contact-list li a:hover{ color:var(--accent); }
+
+  /* ============ FOOTER ============ */
+  footer{
+    padding:30px clamp(20px,4vw,48px);
+    border-top:1px solid var(--line);
+    display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px;
+    font-family:var(--mono); font-size:10px; letter-spacing:.1em;
+    color:var(--text-faint); text-transform:uppercase;
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ transition:none !important; scroll-behavior:auto !important; }
+  }
+</style>
+</head>
+<body>
+
+  <!-- ============ LANDING ============ -->
+  <div id="landing">
+    <div class="frame"></div>
+    <div class="corner tl"></div>
+    <div class="corner tr"></div>
+    <div class="corner bl"></div>
+    <div class="corner br"></div>
+    <div class="center">
+      <div class="name">Nathan Lampl</div>
+      <div class="enter">Art&nbsp;Department</div>
+      <div class="sub">Click to enter</div>
+    </div>
+  </div>
+
+  <!-- ============ SITE ============ -->
+  <div id="site">
+    <header class="topnav">
+      <a href="#/work" class="brand">NATHAN <span>LAMPL</span></a>
+      <button id="navToggle" aria-label="Toggle menu">≡</button>
+      <nav id="navLinks">
+        <a href="#/work/commercial" data-cat="commercial">Commercial</a>
+        <a href="#/work/narrative" data-cat="narrative">Narrative</a>
+        <a href="#/work/mv" data-cat="mv">Music Video</a>
+        <a href="#/contact" data-cat="contact">Contact</a>
+      </nav>
+    </header>
+
+    <main id="app"></main>
+
+    <footer>
+      <span>&copy; Nathan Lampl</span>
+      <span>Production Design &amp; Art Direction</span>
+    </footer>
+  </div>
+
+<script>
+/* =========================================================
+   PROJECT DATA
+   ---------------------------------------------------------
+   To add real photos: put image URLs (or local file paths,
+   e.g. "images/didi-1.jpg") into a project's `images` array.
+   To add a video: paste a YouTube or Vimeo EMBED url into
+   `video`, e.g. "https://www.youtube.com/embed/XXXXXXXXXXX"
+   Leave images: [] and video: "" if you don't have them yet —
+   the site will show a placeholder automatically.
+
+   To add press, articles, or any other link to a project, add a
+   `links` array, e.g.:
+   links:[{label:"Press: Variety", url:"https://..."}, {label:"IMDb", url:"https://..."}]
+   Leave it off entirely (or as []) if there's nothing to link.
+========================================================= */
+const PROJECTS = [
+  // ---- COMMERCIAL ----
+  { id:"mtv-doomsday", title:"MTV", category:"commercial", role:"Production Designer", director:"Lamar + Nik", company:"Doomsday", images:[], video:"" },
+  { id:"cinnamon-toast-crunch", title:"Cinnamon Toast Crunch", category:"commercial", role:"Art Director", director:"Joe Zohar", company:"Obsidian", images:[], video:"" },
+  { id:"google", title:"Google", category:"commercial", role:"Art Coordinator", director:"Justyna Obasi", company:"Love Song", images:[], video:"" },
+  { id:"michelob", title:"Michelob", category:"commercial", role:"Art Coordinator", director:"Calmatic", company:"PrettyBird", images:[], video:"" },
+  { id:"levis", title:"Levi's", category:"commercial", role:"Art Coordinator", director:"Leo Aguirre", company:"Stink LLC", images:[], video:"" },
+  { id:"volkswagen", title:"Volkswagen", category:"commercial", role:"Art Coordinator", director:"Calmatic", company:"Prettybird", images:[], video:"" },
+  { id:"kroger", title:"Kroger", category:"commercial", role:"Art Coordinator", director:"David Ebert / Danielle Katvan", company:"1st Ave Machine", images:[], video:"" },
+  { id:"hilton21", title:"Hilton '21", category:"commercial", role:"Art Coordinator", director:"David Ebert / Danielle Katvan", company:"1st Ave Machine", images:[], video:"" },
+  { id:"hilton22", title:"Hilton '22", category:"commercial", role:"Art Coordinator", director:"David Ebert / Danielle Katvan", company:"1st Ave Machine", images:[], video:"" },
+  { id:"zillow", title:"Zillow", category:"commercial", role:"Art Coordinator", director:"Karena Evans", company:"Fela", images:[], video:"" },
+  { id:"fanduel", title:"FanDuel", category:"commercial", role:"Art Coordinator", director:"Forrest Davis", company:"Omaha Productions", images:[], video:"" },
+  { id:"coinbase", title:"Coinbase", category:"commercial", role:"Art Coordinator", director:"Jack Begert", company:"Missing Pieces", images:[], video:"" },
+  { id:"taaf", title:"TAAF", category:"commercial", role:"Art Coordinator", director:"Sean Wang", company:"Park Pictures LLC", images:[], video:"https://www.youtube.com/embed/DzrRrMgRV_c" },
+
+  // ---- NARRATIVE — feature film ----
+  { id:"fuego", title:"Fuego", category:"narrative", subtype:"feature", role:"Production Designer", director:"Edwin Franko", company:"", images:[], video:"https://www.youtube.com/embed/pGvzrrDCINU" },
+  { id:"didi", title:"Didi", category:"narrative", subtype:"feature", role:"Art Director", director:"Sean Wang", company:"", images:[], video:"https://www.youtube.com/embed/e6gve8GtSuU" },
+  { id:"clarissa", title:"Clarissa", category:"narrative", subtype:"feature", role:"Art Director", director:"Chuko & Arie Esiri", company:"", images:[], video:"" },
+  { id:"milk-baby", title:"Milk Baby", category:"narrative", subtype:"feature", role:"Art Director", director:"Kristen Gerweck Diaz", company:"", images:[], video:"" },
+  { id:"accidental-getaway-driver", title:"Accidental Getaway Driver", category:"narrative", subtype:"feature", role:"Art Coordinator", director:"Sing Lee", company:"", images:[], video:"https://www.youtube.com/embed/Obc1XOFz6jQ" },
+  { id:"the-saviors", title:"The Saviors", category:"narrative", subtype:"feature", role:"Art Coordinator", director:"Kevin Hamedani", company:"", images:[], video:"" },
+  { id:"all-that-we-love", title:"All That We Love", category:"narrative", subtype:"feature", role:"Art Coordinator", director:"Yen Tan", company:"", images:[], video:"https://www.youtube.com/embed/9lxgiW67hcE" },
+
+  // ---- NARRATIVE — television ----
+  { id:"the-rehearsal-s2", title:"The Rehearsal S2", category:"narrative", subtype:"tv", role:"Art Coordinator", director:"Nathan Fielder", company:"HBO", images:[], video:"https://www.youtube.com/embed/6CaHP5P4wUc" },
+  { id:"blood-myth-alaska", title:"Blood & Myth Alaska", category:"narrative", subtype:"tv", role:"Art Coordinator", director:"Kahlil Hudson", company:"Hulu", images:[], video:"https://www.youtube.com/embed/Jm9TjZuN3aE" },
+  { id:"terrors-of-jordan-mendoza", title:"Terrors of Jordan Mendoza", category:"narrative", subtype:"tv", role:"Art Coordinator", director:"Jordan Mendoza", company:"Adult Swim", images:[], video:"" },
+
+  // ---- MUSIC VIDEO ----
+  { id:"brii-hold", title:"BRII — \u201CHold\u201D", category:"mv", role:"Production Designer", director:"Devon Rosenberg", company:"Devon Asher Productions", images:[], video:"https://www.youtube.com/embed/sYDx5l5Ax-c" },
+  { id:"luke-hemmings-motion", title:"Luke Hemmings — \u201CMotion\u201D", category:"mv", role:"Production Designer", director:"Kris Moyes", company:"", images:[], video:"" },
+  { id:"cameron-hardy-perfume", title:"Cameron Hardy — \u201CPerfume\u201D", category:"mv", role:"Production Designer", director:"Jackie Kulla", company:"", images:[], video:"" },
+  { id:"coin-chapstick", title:"COIN — \u201CChapstick\u201D", category:"mv", role:"Art Director", director:"Daniel Henry", company:"Obsidian", images:[], video:"https://www.youtube.com/embed/eI9sOc7wbDo" },
+  { id:"ewf-lucky-daye", title:"Earth, Wind & Fire ft. Lucky Daye — \u201CYou Want My Love\u201D", category:"mv", role:"Art Director", director:"Andrew Litten", company:"Obsidian", images:[], video:"https://www.youtube.com/embed/Q-Keps0vrYE" },
+  { id:"ben-platt-iwlybid", title:"Ben Platt — \u201CI Wanna Love You But I Don\u2019t\u201D", category:"mv", role:"Art Director", director:"Nick Lieberman", company:"Field Trip", images:[], video:"https://www.youtube.com/embed/ZMud0QVzYUA" },
+  { id:"the-linda-lindas-growing-up", title:"The Linda Lindas — \u201CGrowing Up\u201D", category:"mv", role:"Art Director", director:"Humberto Leon", company:"Ways and Means", images:[], video:"https://www.youtube.com/embed/vhMH8pdhNYs" },
+  { id:"tyler-lumberjack", title:"Tyler, The Creator — \u201CLumberjack\u201D", category:"mv", role:"Set Decorator", director:"Tyler, The Creator", company:"Happy Place Productions", images:[], video:"https://www.youtube.com/embed/R4Y7JIQlv20" },
+  { id:"tyler-wusyaname", title:"Tyler, The Creator — \u201CWusyaname\u201D", category:"mv", role:"Set Decorator", director:"Tyler, The Creator", company:"Happy Place Productions", images:[], video:"https://www.youtube.com/embed/NJea386275c" },
+  { id:"tyler-lemonhead", title:"Tyler, The Creator — \u201CLemonhead\u201D", category:"mv", role:"Set Decorator", director:"Tyler, The Creator", company:"Happy Place Productions", images:[], video:"https://www.youtube.com/embed/a5JCltuobqQ" },
+  { id:"tyler-corso", title:"Tyler, The Creator — \u201CCorso\u201D", category:"mv", role:"Set Decorator", director:"Tyler, The Creator", company:"Happy Place Productions", images:[], video:"https://www.youtube.com/embed/Lqvwm3zAILI" },
+  { id:"tyler-juggernaut", title:"Tyler, The Creator — \u201CJuggernaut\u201D", category:"mv", role:"Set Decorator", director:"Tyler, The Creator", company:"Happy Place Productions", images:[], video:"https://www.youtube.com/embed/icoOOiSlKK0" },
+  { id:"tyler-brown-sugar-salmon", title:"Tyler, The Creator — \u201CBrown Sugar Salmon\u201D", category:"mv", role:"Set Decorator", director:"Tyler, The Creator", company:"Happy Place Productions", images:[], video:"https://www.youtube.com/embed/ETh_n0u-g5o" },
+  { id:"1999-write-the-future-avocado-shake", title:"1999 Write the Future — \u201CAvocado Shake\u201D", category:"mv", role:"Art Coordinator", director:"MAMESJAO", company:"88Rising", images:[], video:"https://www.youtube.com/embed/XyicLDW1SaM" },
+  { id:"the-regrettes-i-dare-you", title:"The Regrettes — \u201CI Dare You\u201D", category:"mv", role:"Art Coordinator", director:"Watts", company:"London Alley", images:[], video:"https://www.youtube.com/embed/WOgQpjARYyc" },
+];
+
+const CATEGORY_LABEL = { commercial:"Commercial", narrative:"Narrative", mv:"Music Video" };
+const CATEGORY_DESC = {
+  commercial:"Brand and spot work across Art Coordination and Art Direction.",
+  narrative:"Feature film and television — Art Coordinator and Art Director credits.",
+  mv:"Music video production design and art direction."
+};
+
+const CONTACT = {
+  email:"lamplnathan@gmail.com",
+  phone:"760.518.1901",
+  instagram:"", // add your instagram URL
+  imdb:""        // add your IMDb URL
+};
+
+/* ============ RENDER HELPERS ============ */
+function placeholderBlock(label){
+  return `<div class="ph"><span class="placeholder-label">${label}</span></div>`;
+}
+
+function youtubeId(video){
+  if(!video) return null;
+  const m = video.match(/embed\/([a-zA-Z0-9_-]+)/);
+  return m ? m[1] : null;
+}
+
+function cardMedia(p){
+  if(p.images && p.images.length){
+    return `<img class="real" src="${p.images[0]}" alt="${p.title}" loading="lazy">`;
+  }
+  const ytId = youtubeId(p.video);
+  if(ytId){
+    return `<img class="real" src="https://img.youtube.com/vi/${ytId}/maxresdefault.jpg" alt="${p.title}" loading="lazy" onerror="this.onerror=null;this.src='https://img.youtube.com/vi/${ytId}/hqdefault.jpg';">`;
+  }
+  return placeholderBlock("Photos coming");
+}
+
+function projectCard(p){
+  return `
+    <a class="card" href="#/project/${p.id}" data-subtype="${p.subtype || ''}">
+      ${cardMedia(p)}
+      <span class="tag">${p.role}</span>
+      <div class="info">
+        <h3>${p.title}</h3>
+        ${p.company ? `<div class="co">${p.company}</div>` : ""}
+      </div>
+    </a>`;
+}
+
+const ROLE_ORDER = { "Production Designer":0, "Art Director":0, "Art Coordinator":1 };
+
+const SUBTYPE_LABEL = { feature:"Feature Film", tv:"Television", short:"Short Film" };
+
+function renderCategory(cat){
+  const items = PROJECTS.filter(p => p.category === cat)
+    .slice()
+    .sort((a,b) => (ROLE_ORDER[a.role] ?? 2) - (ROLE_ORDER[b.role] ?? 2));
+
+  let filterBar = "";
+  if(cat === "narrative"){
+    const subtypesPresent = [...new Set(items.map(p => p.subtype).filter(Boolean))];
+    if(subtypesPresent.length){
+      filterBar = `
+        <div class="filter-bar">
+          <button class="filter-btn active" data-filter="all">All</button>
+          ${subtypesPresent.map(s => `<button class="filter-btn" data-filter="${s}">${SUBTYPE_LABEL[s] || s}</button>`).join("")}
+        </div>`;
+    }
+  }
+
+  return `
+    <div class="page-head">
+      <div class="eyebrow">Selected Work</div>
+      <h1>${CATEGORY_LABEL[cat]}</h1>
+      <p>${CATEGORY_DESC[cat]}</p>
+    </div>
+    ${filterBar}
+    <div class="grid" id="grid">
+      ${items.map(projectCard).join("")}
+    </div>`;
+}
+
+function initCategoryFilters(){
+  const bar = document.querySelector(".filter-bar");
+  if(!bar) return;
+  bar.addEventListener("click", (e) => {
+    const btn = e.target.closest(".filter-btn");
+    if(!btn) return;
+    bar.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    const f = btn.dataset.filter;
+    document.querySelectorAll("#grid .card").forEach(card => {
+      card.style.display = (f === "all" || card.dataset.subtype === f) ? "" : "none";
+    });
+  });
+}
+
+function renderProject(id){
+  const p = PROJECTS.find(x => x.id === id);
+  if(!p) return `<div class="page-head"><h1>Not found</h1></div>`;
+
+  const videoBlock = p.video
+    ? `<div class="video-wrap"><iframe src="${p.video}" title="${p.title}" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe></div>`
+    : "";
+
+  const galleryImgs = p.images && p.images.length ? p.images : [];
+  let galleryBlock;
+  if(galleryImgs.length){
+    galleryBlock = `<div class="project-gallery">
+      ${galleryImgs.map(src => `<div class="shot"><img class="real" src="${src}" alt="${p.title}" loading="lazy"></div>`).join("")}
+    </div>`;
+  } else if(!p.video){
+    galleryBlock = `<div class="empty-note">Photos coming soon</div>`;
+  } else {
+    galleryBlock = "";
+  }
+
+  const linksBlock = (p.links && p.links.length)
+    ? `<div class="project-links">
+        ${p.links.map(l => `<a href="${l.url}" target="_blank" rel="noopener" class="link-pill">${l.label}</a>`).join("")}
+      </div>`
+    : "";
+
+  return `
+    <div class="project-head">
+      <a class="back-link" href="#/work/${p.category}">&larr; Back to ${CATEGORY_LABEL[p.category]}</a>
+      <h1>${p.title}</h1>
+      <div class="credit-line">
+        <div><span class="k">Role</span><span class="v role">${p.role}</span></div>
+        <div><span class="k">Director</span><span class="v">${p.director}</span></div>
+        ${p.company ? `<div><span class="k">Production Co.</span><span class="v">${p.company}</span></div>` : ""}
+      </div>
+      ${linksBlock}
+    </div>
+    ${videoBlock}
+    ${galleryBlock}
+  `;
+}
+
+function renderContact(){
+  const rows = [
+    { k:"Email", v:CONTACT.email, href:`mailto:${CONTACT.email}` },
+    { k:"Phone", v:CONTACT.phone, href:`tel:${CONTACT.phone.replace(/[^0-9]/g,"")}` },
+  ];
+  if(CONTACT.instagram) rows.push({ k:"Instagram", v:"Instagram", href:CONTACT.instagram });
+  if(CONTACT.imdb) rows.push({ k:"IMDb", v:"IMDb", href:CONTACT.imdb });
+
+  return `
+    <div class="contact-wrap">
+      <div class="eyebrow">Get in touch</div>
+      <h1>Contact</h1>
+      <ul class="contact-list">
+        ${rows.map(r => `<li><span class="k">${r.k}</span><a href="${r.href}" target="_blank" rel="noopener">${r.v}</a></li>`).join("")}
+      </ul>
+    </div>`;
+}
+
+function renderHome(){
+  // default landing-inside-site view: show Commercial first
+  return renderCategory("commercial");
+}
+
+/* ============ ROUTER ============ */
+const landing = document.getElementById("landing");
+const site = document.getElementById("site");
+const app = document.getElementById("app");
+const navLinks = document.querySelectorAll("header.topnav nav a[data-cat]");
+
+function setActiveNav(cat){
+  navLinks.forEach(a => a.classList.toggle("current", a.dataset.cat === cat));
+}
+
+function route(){
+  const hash = location.hash || "";
+
+  if(hash === "" ){
+    landing.classList.remove("hidden");
+    site.classList.remove("active");
+    return;
+  }
+
+  landing.classList.add("hidden");
+  site.classList.add("active");
+
+  if(hash.startsWith("#/project/")){
+    const id = hash.replace("#/project/","");
+    app.innerHTML = renderProject(id);
+    const p = PROJECTS.find(x=>x.id===id);
+    setActiveNav(p ? p.category : "");
+  } else if(hash.startsWith("#/work/")){
+    const cat = hash.replace("#/work/","");
+    app.innerHTML = renderCategory(cat);
+    setActiveNav(cat);
+    initCategoryFilters();
+  } else if(hash === "#/contact"){
+    app.innerHTML = renderContact();
+    setActiveNav("contact");
+  } else {
+    app.innerHTML = renderHome();
+    setActiveNav("commercial");
+  }
+  window.scrollTo(0,0);
+  document.getElementById("navLinks").classList.remove("open");
+}
+
+landing.addEventListener("click", () => {
+  location.hash = "#/work/commercial";
+});
+
+document.getElementById("navToggle").addEventListener("click", () => {
+  document.getElementById("navLinks").classList.toggle("open");
+});
+
+window.addEventListener("hashchange", route);
+window.addEventListener("DOMContentLoaded", route);
+route();
+</script>
+</body>
+</html>
