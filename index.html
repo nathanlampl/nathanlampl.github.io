@@ -525,13 +525,32 @@ function youtubeId(video){
   return m ? m[1] : null;
 }
 
+function ytThumbFallback(imgEl, ytId){
+  const stage = imgEl.dataset.stage || "max";
+  if(stage === "max"){
+    imgEl.dataset.stage = "hq";
+    imgEl.src = `https://img.youtube.com/vi/${ytId}/hqdefault.jpg`;
+  } else {
+    const ph = document.createElement("div");
+    ph.className = "ph";
+    ph.innerHTML = '<span class="placeholder-label">Photos coming</span>';
+    imgEl.replaceWith(ph);
+  }
+}
+
+function ytThumbCheckLoad(imgEl, ytId){
+  if(imgEl.naturalWidth <= 120){
+    ytThumbFallback(imgEl, ytId);
+  }
+}
+
 function cardMedia(p){
   if(p.images && p.images.length){
     return `<img class="real" src="${p.images[0]}" alt="${p.title}" loading="lazy">`;
   }
   const ytId = youtubeId(p.video);
   if(ytId){
-    return `<img class="real" src="https://img.youtube.com/vi/${ytId}/maxresdefault.jpg" alt="${p.title}" loading="lazy" onerror="this.onerror=null;this.src='https://img.youtube.com/vi/${ytId}/hqdefault.jpg';" onload="if(this.naturalWidth<=120){this.onerror=null;this.src='https://img.youtube.com/vi/${ytId}/hqdefault.jpg';}">`;
+    return `<img class="real" src="https://img.youtube.com/vi/${ytId}/maxresdefault.jpg" alt="${p.title}" loading="lazy" onerror="ytThumbFallback(this,'${ytId}')" onload="ytThumbCheckLoad(this,'${ytId}')">`;
   }
   return placeholderBlock("Photos coming");
 }
