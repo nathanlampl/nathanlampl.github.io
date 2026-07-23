@@ -462,7 +462,7 @@ const PROJECTS = [
   { id:"cinnamon-toast-crunch", title:"Cinnamon Toast Crunch", category:"commercial", role:"Art Director", director:"Joe Zohar", company:"Obsidian", images:[], video:"https://www.youtube.com/embed/ofbxZp-5VsY" },
   { id:"michelob", title:"Michelob", category:"commercial", role:"Art Coordinator", director:"Calmatic", company:"PrettyBird", images:[], video:"https://www.youtube.com/embed/kdBumtUSIX0" },
   { id:"levis", title:"Levi's", category:"commercial", role:"Art Coordinator", director:"Leo Aguirre", company:"Stink LLC", images:[], video:"https://www.youtube.com/embed/nalO8f2GxHM" },
-  { id:"volkswagen", title:"Volkswagen", category:"commercial", role:"Art Coordinator", director:"Calmatic", company:"Prettybird", images:[], video:"https://player.vimeo.com/video/687279125" },
+  { id:"volkswagen", title:"Volkswagen", category:"commercial", role:"Art Coordinator", director:"Calmatic", company:"Prettybird", images:[], video:"https://www.youtube.com/embed/_FJpikTEoQM" },
   { id:"hilton-brandi", title:"Hilton (Brandi)", category:"commercial", role:"Art Coordinator", director:"David Ebert / Danielle Katvan", company:"1st Ave Machine", images:[], video:"https://www.youtube.com/embed/0dvX9IVkCis" },
   { id:"hilton-paris", title:"Hilton (Paris)", category:"commercial", role:"Art Coordinator", director:"David Ebert / Danielle Katvan", company:"1st Ave Machine", images:["images/hilton-paris-1.jpg"], video:"https://www.tiktok.com/@hilton/video/7200427944060423470" },
   { id:"zillow", title:"Zillow", category:"commercial", role:"Art Coordinator", director:"Karena Evans", company:"Fela", images:[], video:"https://www.youtube.com/embed/grqWOEYGXSA" },
@@ -637,7 +637,7 @@ function renderProject(id){
     videoBlock = `<div class="video-wrap"><iframe src="${p.video}" title="${p.title}" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe></div>`;
   }
 
-  const galleryImgs = p.images && p.images.length ? p.images : [];
+  const galleryImgs = (!p.video && p.images && p.images.length) ? p.images : [];
   let galleryBlock;
   if(galleryImgs.length){
     galleryBlock = `<div class="project-gallery">
