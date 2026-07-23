@@ -331,6 +331,13 @@
   }
   .video-wrap iframe{ position:absolute; inset:0; width:100%; height:100%; border:0; }
 
+  .tiktok-wrap{
+    display:flex; justify-content:center;
+    padding:24px 0; background:var(--bg-raised); border:1px solid var(--line);
+    margin-bottom:2px;
+  }
+  .tiktok-wrap blockquote.tiktok-embed{ margin:0 !important; }
+
   .project-gallery{
     display:grid;
     grid-template-columns:repeat(auto-fill, minmax(320px,1fr));
@@ -436,7 +443,11 @@
    To add real photos: put image URLs (or local file paths,
    e.g. "images/didi-1.jpg") into a project's `images` array.
    To add a video: paste a YouTube or Vimeo EMBED url into
-   `video`, e.g. "https://www.youtube.com/embed/XXXXXXXXXXX"
+   `video`, e.g. "https://www.youtube.com/embed/XXXXXXXXXXX" or
+   "https://player.vimeo.com/video/XXXXXXXXX". For TikTok, just
+   paste the regular TikTok video link as-is (e.g.
+   "https://www.tiktok.com/@user/video/1234567890") — no embed
+   conversion needed, the site handles TikTok automatically.
    Leave images: [] and video: "" if you don't have them yet —
    the site will show a placeholder automatically.
 
@@ -447,18 +458,18 @@
 ========================================================= */
 const PROJECTS = [
   // ---- COMMERCIAL ----
-  { id:"mtv-doomsday", title:"MTV", category:"commercial", role:"Production Designer", director:"Lamar + Nik", company:"Doomsday", images:[], video:"" },
+  { id:"mtv-doomsday", title:"MTV", category:"commercial", role:"Production Designer", director:"Lamar + Nik", company:"Doomsday", images:[], video:"https://www.youtube.com/embed/_GKKAbEIjc8" },
   { id:"cinnamon-toast-crunch", title:"Cinnamon Toast Crunch", category:"commercial", role:"Art Director", director:"Joe Zohar", company:"Obsidian", images:[], video:"" },
   { id:"google", title:"Google", category:"commercial", role:"Art Coordinator", director:"Justyna Obasi", company:"Love Song", images:[], video:"" },
-  { id:"michelob", title:"Michelob", category:"commercial", role:"Art Coordinator", director:"Calmatic", company:"PrettyBird", images:[], video:"" },
-  { id:"levis", title:"Levi's", category:"commercial", role:"Art Coordinator", director:"Leo Aguirre", company:"Stink LLC", images:[], video:"" },
-  { id:"volkswagen", title:"Volkswagen", category:"commercial", role:"Art Coordinator", director:"Calmatic", company:"Prettybird", images:[], video:"" },
+  { id:"michelob", title:"Michelob", category:"commercial", role:"Art Coordinator", director:"Calmatic", company:"PrettyBird", images:[], video:"https://www.youtube.com/embed/kdBumtUSIX0" },
+  { id:"levis", title:"Levi's", category:"commercial", role:"Art Coordinator", director:"Leo Aguirre", company:"Stink LLC", images:[], video:"https://www.youtube.com/embed/nalO8f2GxHM" },
+  { id:"volkswagen", title:"Volkswagen", category:"commercial", role:"Art Coordinator", director:"Calmatic", company:"Prettybird", images:[], video:"https://player.vimeo.com/video/687279125" },
   { id:"kroger", title:"Kroger", category:"commercial", role:"Art Coordinator", director:"David Ebert / Danielle Katvan", company:"1st Ave Machine", images:[], video:"" },
-  { id:"hilton21", title:"Hilton '21", category:"commercial", role:"Art Coordinator", director:"David Ebert / Danielle Katvan", company:"1st Ave Machine", images:[], video:"" },
-  { id:"hilton22", title:"Hilton '22", category:"commercial", role:"Art Coordinator", director:"David Ebert / Danielle Katvan", company:"1st Ave Machine", images:[], video:"" },
-  { id:"zillow", title:"Zillow", category:"commercial", role:"Art Coordinator", director:"Karena Evans", company:"Fela", images:[], video:"" },
+  { id:"hilton-brandi", title:"Hilton (Brandi)", category:"commercial", role:"Art Coordinator", director:"David Ebert / Danielle Katvan", company:"1st Ave Machine", images:[], video:"https://www.youtube.com/embed/0dvX9IVkCis" },
+  { id:"hilton-paris", title:"Hilton (Paris)", category:"commercial", role:"Art Coordinator", director:"David Ebert / Danielle Katvan", company:"1st Ave Machine", images:[], video:"https://www.tiktok.com/@hilton/video/7200427944060423470" },
+  { id:"zillow", title:"Zillow", category:"commercial", role:"Art Coordinator", director:"Karena Evans", company:"Fela", images:[], video:"https://www.youtube.com/embed/grqWOEYGXSA" },
   { id:"fanduel", title:"FanDuel", category:"commercial", role:"Art Coordinator", director:"Forrest Davis", company:"Omaha Productions", images:[], video:"" },
-  { id:"coinbase", title:"Coinbase", category:"commercial", role:"Art Coordinator", director:"Jack Begert", company:"Missing Pieces", images:[], video:"" },
+  { id:"coinbase", title:"Coinbase", category:"commercial", role:"Art Coordinator", director:"Jack Begert", company:"Missing Pieces", images:[], video:"https://www.youtube.com/embed/BHsIS5viamE" },
   { id:"taaf", title:"TAAF", category:"commercial", role:"Art Coordinator", director:"Sean Wang", company:"Park Pictures LLC", images:[], video:"https://www.youtube.com/embed/DzrRrMgRV_c" },
 
   // ---- NARRATIVE — feature film ----
@@ -477,12 +488,13 @@ const PROJECTS = [
 
   // ---- MUSIC VIDEO ----
   { id:"brii-hold", title:"BRII — \u201CHold\u201D", category:"mv", role:"Production Designer", director:"Devon Rosenberg", company:"Devon Asher Productions", images:[], video:"https://www.youtube.com/embed/sYDx5l5Ax-c" },
-  { id:"luke-hemmings-motion", title:"Luke Hemmings — \u201CMotion\u201D", category:"mv", role:"Production Designer", director:"Kris Moyes", company:"", images:[], video:"" },
-  { id:"cameron-hardy-perfume", title:"Cameron Hardy — \u201CPerfume\u201D", category:"mv", role:"Production Designer", director:"Jackie Kulla", company:"", images:[], video:"" },
+  { id:"luke-hemmings-motion", title:"Luke Hemmings — \u201CMotion\u201D", category:"mv", role:"Production Designer", director:"Kris Moyes", company:"Commondeer", images:[], video:"https://www.youtube.com/embed/EhQDjTztFU0" },
+  { id:"cameron-hardy-perfume", title:"Cameron Hardy — \u201CPerfume\u201D", category:"mv", role:"Production Designer", director:"Jackie Kulla", company:"Drtymnd", images:[], video:"https://www.youtube.com/embed/pPuBpESdpZ8" },
   { id:"coin-chapstick", title:"COIN — \u201CChapstick\u201D", category:"mv", role:"Art Director", director:"Daniel Henry", company:"Obsidian", images:[], video:"https://www.youtube.com/embed/eI9sOc7wbDo" },
   { id:"ewf-lucky-daye", title:"Earth, Wind & Fire ft. Lucky Daye — \u201CYou Want My Love\u201D", category:"mv", role:"Art Director", director:"Andrew Litten", company:"Obsidian", images:[], video:"https://www.youtube.com/embed/Q-Keps0vrYE" },
   { id:"ben-platt-iwlybid", title:"Ben Platt — \u201CI Wanna Love You But I Don\u2019t\u201D", category:"mv", role:"Art Director", director:"Nick Lieberman", company:"Field Trip", images:[], video:"https://www.youtube.com/embed/ZMud0QVzYUA" },
   { id:"the-linda-lindas-growing-up", title:"The Linda Lindas — \u201CGrowing Up\u201D", category:"mv", role:"Art Director", director:"Humberto Leon", company:"Ways and Means", images:[], video:"https://www.youtube.com/embed/vhMH8pdhNYs" },
+  { id:"vvup-aint-nobody", title:"VVUP — \u201CAin\u2019t Nobody\u201D", category:"mv", role:"Art Director", director:"Amber Park", company:"Prototype", images:[], video:"https://www.youtube.com/embed/fFGpcURSDpw" },
   { id:"tyler-lumberjack", title:"Tyler, The Creator — \u201CLumberjack\u201D", category:"mv", role:"Set Decorator", director:"Tyler, The Creator", company:"Happy Place Productions", images:[], video:"https://www.youtube.com/embed/R4Y7JIQlv20" },
   { id:"tyler-wusyaname", title:"Tyler, The Creator — \u201CWusyaname\u201D", category:"mv", role:"Set Decorator", director:"Tyler, The Creator", company:"Happy Place Productions", images:[], video:"https://www.youtube.com/embed/NJea386275c" },
   { id:"tyler-lemonhead", title:"Tyler, The Creator — \u201CLemonhead\u201D", category:"mv", role:"Set Decorator", director:"Tyler, The Creator", company:"Happy Place Productions", images:[], video:"https://www.youtube.com/embed/a5JCltuobqQ" },
@@ -589,13 +601,20 @@ function initCategoryFilters(){
   });
 }
 
+function isTikTok(video){
+  return video && video.includes("tiktok.com");
+}
+
 function renderProject(id){
   const p = PROJECTS.find(x => x.id === id);
   if(!p) return `<div class="page-head"><h1>Not found</h1></div>`;
 
-  const videoBlock = p.video
-    ? `<div class="video-wrap"><iframe src="${p.video}" title="${p.title}" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe></div>`
-    : "";
+  let videoBlock = "";
+  if(p.video && isTikTok(p.video)){
+    videoBlock = `<div class="tiktok-wrap"><blockquote class="tiktok-embed" cite="${p.video}" data-video-id=""><section></section></blockquote></div>`;
+  } else if(p.video){
+    videoBlock = `<div class="video-wrap"><iframe src="${p.video}" title="${p.title}" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe></div>`;
+  }
 
   const galleryImgs = p.images && p.images.length ? p.images : [];
   let galleryBlock;
@@ -655,6 +674,16 @@ function renderHome(){
 }
 
 /* ============ ROUTER ============ */
+function loadTikTokEmbedScript(){
+  const old = document.getElementById("tiktok-embed-script");
+  if(old) old.remove();
+  const s = document.createElement("script");
+  s.id = "tiktok-embed-script";
+  s.async = true;
+  s.src = "https://www.tiktok.com/embed.js";
+  document.body.appendChild(s);
+}
+
 const landing = document.getElementById("landing");
 const site = document.getElementById("site");
 const app = document.getElementById("app");
@@ -681,6 +710,7 @@ function route(){
     app.innerHTML = renderProject(id);
     const p = PROJECTS.find(x=>x.id===id);
     setActiveNav(p ? p.category : "");
+    if(p && p.video && isTikTok(p.video)) loadTikTokEmbedScript();
   } else if(hash.startsWith("#/work/")){
     const cat = hash.replace("#/work/","");
     app.innerHTML = renderCategory(cat);
