@@ -531,7 +531,7 @@ function cardMedia(p){
   }
   const ytId = youtubeId(p.video);
   if(ytId){
-    return `<img class="real" src="https://img.youtube.com/vi/${ytId}/maxresdefault.jpg" alt="${p.title}" loading="lazy" onerror="this.onerror=null;this.src='https://img.youtube.com/vi/${ytId}/hqdefault.jpg';">`;
+    return `<img class="real" src="https://img.youtube.com/vi/${ytId}/maxresdefault.jpg" alt="${p.title}" loading="lazy" onerror="this.onerror=null;this.src='https://img.youtube.com/vi/${ytId}/hqdefault.jpg';" onload="if(this.naturalWidth<=120){this.onerror=null;this.src='https://img.youtube.com/vi/${ytId}/hqdefault.jpg';}">`;
   }
   return placeholderBlock("Photos coming");
 }
