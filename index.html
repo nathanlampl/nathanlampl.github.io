@@ -619,13 +619,20 @@ function isTikTok(video){
   return video && video.includes("tiktok.com");
 }
 
+function tiktokVideoId(url){
+  if(!url) return "";
+  const m = url.match(/\/video\/(\d+)/);
+  return m ? m[1] : "";
+}
+
 function renderProject(id){
   const p = PROJECTS.find(x => x.id === id);
   if(!p) return `<div class="page-head"><h1>Not found</h1></div>`;
 
   let videoBlock = "";
   if(p.video && isTikTok(p.video)){
-    videoBlock = `<div class="tiktok-wrap"><blockquote class="tiktok-embed" cite="${p.video}" data-video-id=""><section></section></blockquote></div>`;
+    const vid = tiktokVideoId(p.video);
+    videoBlock = `<div class="tiktok-wrap"><blockquote class="tiktok-embed" cite="${p.video}" data-video-id="${vid}" style="max-width:605px;min-width:325px;"><section></section></blockquote></div>`;
   } else if(p.video){
     videoBlock = `<div class="video-wrap"><iframe src="${p.video}" title="${p.title}" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe></div>`;
   }
