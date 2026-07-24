@@ -12,14 +12,14 @@
 
   /* ============ TOKENS ============ */
   :root{
-    --bg:            #0e2318;
-    --bg-raised:     #15301f;
+    --bg:            #0b0a08;
+    --bg-raised:     #131210;
     --bg-tag:        #d8c9a8;      /* manila-tag color, used sparingly */
-    --line:          #234030;
-    --line-soft:     #1a2c20;
+    --line:          #26231d;
+    --line-soft:     #1a1815;
     --text:          #ece6d8;
-    --text-dim:      #8fa693;
-    --text-faint:    #4d6b55;
+    --text-dim:      #948c7a;
+    --text-faint:    #55503f;
     --accent:        #b5844f;      /* gaffer-tape brass */
     --accent-dim:    #6b5334;
     --focus:         #d9b273;
@@ -34,7 +34,7 @@
   body{
     background:
       radial-gradient(ellipse at 50% 0%, rgba(181,132,79,.06), transparent 55%),
-      linear-gradient(180deg, #12301f 0%, #0a1c12 55%, #07120b 100%) fixed;
+      linear-gradient(180deg, #0f0d0a 0%, #080706 100%) fixed;
     color:var(--text);
     font-family:var(--body);
     -webkit-font-smoothing:antialiased;
@@ -165,7 +165,7 @@
     position:sticky; top:0; z-index:200;
     display:flex; align-items:center; justify-content:space-between;
     padding:20px clamp(20px,4vw,48px);
-    background:rgba(10,26,17,.88);
+    background:rgba(11,10,8,.88);
     backdrop-filter:blur(8px);
     border-bottom:1px solid var(--line);
   }
@@ -263,7 +263,7 @@
     position:absolute; inset:0;
     background:
       repeating-linear-gradient(135deg, rgba(181,132,79,.05) 0 2px, transparent 2px 14px),
-      linear-gradient(160deg, var(--bg-raised), #081a11);
+      linear-gradient(160deg, var(--bg-raised), #0a0908);
     display:flex; align-items:center; justify-content:center;
     transition:transform .6s ease;
   }
@@ -383,7 +383,7 @@
     position:absolute; inset:0;
     background:
       repeating-linear-gradient(135deg, rgba(181,132,79,.05) 0 2px, transparent 2px 14px),
-      linear-gradient(160deg, var(--bg-raised), #081a11);
+      linear-gradient(160deg, var(--bg-raised), #0a0908);
     display:flex; align-items:center; justify-content:center;
   }
   .project-gallery img.real{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
