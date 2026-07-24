@@ -59,57 +59,50 @@
   /* ============ LANDING ============ */
   #landing{
     position:fixed; inset:0;
-    display:flex; align-items:center; justify-content:center;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
     background:
-      radial-gradient(ellipse at 50% 30%, rgba(181,132,79,.10), transparent 60%),
-      linear-gradient(180deg, #0f0d0a 0%, #080706 100%);
+      radial-gradient(ellipse at 50% 20%, rgba(181,132,79,.08), transparent 55%),
+      linear-gradient(180deg, #12301f 0%, #0a1c12 55%, #07120b 100%);
     cursor:pointer;
     z-index:500;
+    padding:40px 20px;
+    text-align:center;
     transition:opacity .7s ease, visibility .7s ease;
   }
   #landing.hidden{ opacity:0; visibility:hidden; pointer-events:none; }
 
-  #landing .frame{
-    position:absolute; inset:28px;
-    border:1px solid var(--line);
+  #landing .name-stack{
+    display:flex; flex-direction:column; align-items:center;
     pointer-events:none;
+    margin-bottom:30px;
   }
-  #landing .corner{
-    position:absolute; width:16px; height:16px;
-    pointer-events:none;
-  }
-  #landing .corner::before, #landing .corner::after{
-    content:""; position:absolute; background:var(--text-dim);
-  }
-  #landing .corner::before{ width:16px; height:1px; top:0; left:0; }
-  #landing .corner::after{ width:1px; height:16px; top:0; left:0; }
-  #landing .tl{ top:28px; left:28px; }
-  #landing .tr{ top:28px; right:28px; transform:scaleX(-1); }
-  #landing .bl{ bottom:28px; left:28px; transform:scaleY(-1); }
-  #landing .br{ bottom:28px; right:28px; transform:scale(-1); }
-
-  #landing .center{
-    text-align:center;
-    position:relative;
-  }
-  #landing .name{
-    font-family:var(--mono);
-    font-size:11px;
-    letter-spacing:.35em;
-    color:var(--text-dim);
-    text-transform:uppercase;
-    margin-bottom:22px;
-  }
-  #landing .enter{
+  #landing .name-stack div{
     font-family:var(--display);
-    font-size:clamp(28px,5vw,52px);
-    letter-spacing:.04em;
-    color:var(--text);
+    font-size:clamp(30px,8vw,92px);
+    color:var(--accent);
+    letter-spacing:.01em;
+    line-height:.88;
+    white-space:nowrap;
+  }
+  #landing .name-stack div:nth-child(1){ opacity:1; }
+  #landing .name-stack div:nth-child(2){ opacity:.68; margin-top:-.12em; }
+  #landing .name-stack div:nth-child(3){ opacity:.46; margin-top:-.12em; }
+  #landing .name-stack div:nth-child(4){ opacity:.28; margin-top:-.12em; }
+  #landing .name-stack div:nth-child(5){ opacity:.15; margin-top:-.12em; }
+  #landing .name-stack div:nth-child(6){ opacity:.06; margin-top:-.12em; }
+
+  #landing .role{
+    font-family:var(--mono);
+    font-size:clamp(11px,1.6vw,13px);
+    letter-spacing:.28em;
+    text-transform:uppercase;
+    color:#bcd4c1;
+    margin-bottom:16px;
     position:relative;
     display:inline-block;
-    padding-bottom:14px;
+    padding-bottom:12px;
   }
-  #landing .enter::after{
+  #landing .role::after{
     content:"";
     position:absolute; left:50%; bottom:0;
     width:0; height:1px;
@@ -117,14 +110,13 @@
     transform:translateX(-50%);
     transition:width .5s ease;
   }
-  #landing:hover .enter::after{ width:100%; }
+  #landing:hover .role::after{ width:100%; }
   #landing .sub{
-    margin-top:16px;
     font-family:var(--mono);
     font-size:10px;
     letter-spacing:.25em;
-    color:var(--text-faint);
     text-transform:uppercase;
+    color:#4d6b55;
   }
 
   /* ============ SITE SHELL ============ */
@@ -403,22 +395,22 @@
 
   <!-- ============ LANDING ============ -->
   <div id="landing">
-    <div class="frame"></div>
-    <div class="corner tl"></div>
-    <div class="corner tr"></div>
-    <div class="corner bl"></div>
-    <div class="corner br"></div>
-    <div class="center">
-      <div class="name">Nathan Lampl</div>
-      <div class="enter">Art&nbsp;Department</div>
-      <div class="sub">Click to enter</div>
+    <div class="name-stack" aria-hidden="true">
+      <div>NATHAN LAMPL</div>
+      <div>NATHAN LAMPL</div>
+      <div>NATHAN LAMPL</div>
+      <div>NATHAN LAMPL</div>
+      <div>NATHAN LAMPL</div>
+      <div>NATHAN LAMPL</div>
     </div>
+    <div class="role">Production Designer &middot; Art Director</div>
+    <div class="sub">Click to enter</div>
   </div>
 
   <!-- ============ SITE ============ -->
   <div id="site">
     <header class="topnav">
-      <a href="#/work" class="brand">NATHAN <span>LAMPL</span></a>
+      <a href="#" class="brand">NATHAN <span>LAMPL</span></a>
       <button id="navToggle" aria-label="Toggle menu">≡</button>
       <nav id="navLinks">
         <a href="#/work/commercial" data-cat="commercial">Commercial</a>
@@ -717,7 +709,7 @@ function setActiveNav(cat){
 function route(){
   const hash = location.hash || "";
 
-  if(hash === "" ){
+  if(hash === "" || hash === "#"){
     landing.classList.remove("hidden");
     site.classList.remove("active");
     return;
